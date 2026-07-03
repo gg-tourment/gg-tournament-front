@@ -1,10 +1,11 @@
 import { Navigate, Outlet, useLocation } from 'react-router-dom'
-import { isAuthenticated } from '../lib/auth'
+import { useAuthContext } from '../hooks/useAuthContext'
 
 function PrivateRoute() {
+  const { isAuthenticated } = useAuthContext()
   const location = useLocation()
 
-  if (!isAuthenticated()) {
+  if (!isAuthenticated) {
     return <Navigate to="/login" state={{ from: location }} replace />
   }
 
