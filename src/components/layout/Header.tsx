@@ -1,8 +1,10 @@
 import { Link } from 'react-router-dom'
-import { isAuthenticated } from '../../lib/auth'
+import { useAuthContext } from '../../hooks/useAuthContext'
+import { useLogoutMutation } from '../../hooks/useAuth'
 
 function Header() {
-  const authed = isAuthenticated()
+  const { isAuthenticated } = useAuthContext()
+  const logoutMutation = useLogoutMutation()
 
   return (
     <header className="border-b border-gray-200">
@@ -12,8 +14,17 @@ function Header() {
         </Link>
         <nav className="flex items-center gap-4 text-sm text-gray-700">
           <Link to="/tournaments/new">대회 생성</Link>
-          {authed ? (
-            <Link to="/my">내 정보</Link>
+          {isAuthenticated ? (
+            <>
+              <Link to="/my">내 정보</Link>
+              <button
+                type="button"
+                onClick={() => logoutMutation.mutate()}
+                className="cursor-pointer"
+              >
+                로그아웃
+              </button>
+            </>
           ) : (
             <>
               <Link to="/login">로그인</Link>
