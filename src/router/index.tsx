@@ -5,6 +5,7 @@ import NotFoundPage from '../pages/NotFoundPage'
 import PaymentFailPage from '../pages/PaymentFailPage'
 import PaymentSuccessPage from '../pages/PaymentSuccessPage'
 import SignupPage from '../pages/SignupPage'
+import TournamentBracketPage from '../pages/TournamentBracketPage'
 import TournamentCreatePage from '../pages/TournamentCreatePage'
 import TournamentDetailPage from '../pages/TournamentDetailPage'
 import TournamentListPage from '../pages/TournamentListPage'
@@ -18,6 +19,7 @@ export const router = createBrowserRouter([
     children: [
       { index: true, element: <TournamentListPage /> },
       { path: 'tournaments/:id', element: <TournamentDetailPage /> },
+      { path: 'tournaments/:id/bracket', element: <TournamentBracketPage /> },
       {
         element: <PrivateRoute />,
         children: [

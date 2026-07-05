@@ -40,6 +40,11 @@ function TournamentDetailPage() {
               <Button>참가 신청</Button>
             </Link>
           )}
+          {(tournament.status === 'IN_PROGRESS' || tournament.status === 'FINISHED') && (
+            <Link to={`/tournaments/${tournament.id}/bracket`}>
+              <Button variant="outline">대진표 보기</Button>
+            </Link>
+          )}
         </div>
         <p className="text-sm text-gray-600">주최자: {tournament.organizerName}</p>
       </div>
