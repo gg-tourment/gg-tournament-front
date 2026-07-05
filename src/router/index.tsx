@@ -1,6 +1,7 @@
 import { createBrowserRouter } from 'react-router-dom'
 import Layout from '../components/layout/Layout'
 import LoginPage from '../pages/LoginPage'
+import MyPage from '../pages/MyPage'
 import NotFoundPage from '../pages/NotFoundPage'
 import PaymentFailPage from '../pages/PaymentFailPage'
 import PaymentSuccessPage from '../pages/PaymentSuccessPage'
@@ -25,6 +26,7 @@ export const router = createBrowserRouter([
         children: [
           { path: 'tournaments/new', element: <TournamentCreatePage /> },
           { path: 'tournaments/:id/payment', element: <TournamentPaymentPage /> },
+          { path: 'my', element: <MyPage /> },
         ],
       },
       { path: 'payments/success', element: <PaymentSuccessPage /> },

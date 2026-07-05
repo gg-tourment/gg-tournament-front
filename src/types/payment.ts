@@ -19,3 +19,19 @@ export interface PaymentResult {
   status: string
   approvedAt: string
 }
+
+export type PaymentHistoryStatus = 'DONE' | 'CANCELED'
+
+export interface PaymentHistoryItem {
+  id: number
+  tournamentId: number
+  tournamentTitle: string
+  amount: number
+  status: PaymentHistoryStatus
+  paidAt: string
+}
+
+export interface PaymentHistoryParams {
+  page?: number
+  size?: number
+}
