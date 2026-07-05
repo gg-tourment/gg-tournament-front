@@ -1,5 +1,5 @@
-import { useQuery } from '@tanstack/react-query'
-import { getTournament, getTournaments } from '../api/tournament'
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
+import { createTournament, getTournament, getTournaments } from '../api/tournament'
 import type { TournamentListParams } from '../types/tournament'
 
 export const tournamentKeys = {
@@ -20,5 +20,15 @@ export function useTournament(id: number) {
     queryKey: tournamentKeys.detail(id),
     queryFn: () => getTournament(id),
     enabled: !Number.isNaN(id),
+  })
+}
+
+export function useCreateTournamentMutation() {
+  const queryClient = useQueryClient()
+  return useMutation({
+    mutationFn: createTournament,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: tournamentKeys.all })
+    },
   })
 }
