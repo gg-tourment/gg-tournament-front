@@ -1,4 +1,5 @@
 import { Link, useParams } from 'react-router-dom'
+import Button from '../components/common/Button'
 import { STATUS_COLOR, STATUS_LABEL } from '../components/tournament/tournamentStatus'
 import { useTournament } from '../hooks/useTournaments'
 import { getErrorMessage } from '../lib/errors'
@@ -32,7 +33,14 @@ function TournamentDetailPage() {
             {STATUS_LABEL[tournament.status]}
           </span>
         </div>
-        <h1 className="text-2xl font-semibold text-gray-900">{tournament.title}</h1>
+        <div className="flex items-center justify-between gap-4">
+          <h1 className="text-2xl font-semibold text-gray-900">{tournament.title}</h1>
+          {tournament.status === 'RECRUITING' && (
+            <Link to={`/tournaments/${tournament.id}/payment`}>
+              <Button>참가 신청</Button>
+            </Link>
+          )}
+        </div>
         <p className="text-sm text-gray-600">주최자: {tournament.organizerName}</p>
       </div>
 
