@@ -31,3 +31,17 @@ export interface TournamentDetail extends TournamentSummary {
   endAt: string
   createdAt: string
 }
+
+export interface TournamentCreateRequest {
+  title: string
+  description: string
+  rules: string
+  gameType: string
+  format: TournamentFormat
+  maxParticipants: number
+  entryFee: number
+  prizePool: number
+  registrationDeadline: string
+  startAt: string
+  endAt: string
+}
