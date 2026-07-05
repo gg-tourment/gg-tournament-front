@@ -3,6 +3,7 @@ import Layout from '../components/layout/Layout'
 import LoginPage from '../pages/LoginPage'
 import NotFoundPage from '../pages/NotFoundPage'
 import SignupPage from '../pages/SignupPage'
+import TournamentDetailPage from '../pages/TournamentDetailPage'
 import TournamentListPage from '../pages/TournamentListPage'
 
 export const router = createBrowserRouter([
@@ -11,6 +12,7 @@ export const router = createBrowserRouter([
     element: <Layout />,
     children: [
       { index: true, element: <TournamentListPage /> },
+      { path: 'tournaments/:id', element: <TournamentDetailPage /> },
       { path: 'login', element: <LoginPage /> },
       { path: 'signup', element: <SignupPage /> },
       { path: '*', element: <NotFoundPage /> },

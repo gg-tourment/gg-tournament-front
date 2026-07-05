@@ -23,3 +23,11 @@ export interface TournamentListParams {
   page?: number
   size?: number
 }
+
+export interface TournamentDetail extends TournamentSummary {
+  description: string
+  rules: string
+  organizerName: string
+  endAt: string
+  createdAt: string
+}
