@@ -115,19 +115,19 @@ function TournamentListPage() {
               <Button
                 variant="outline"
                 size="sm"
-                disabled={data.first}
-                onClick={() => goToPage(data.number - 1)}
+                disabled={data.page === 0}
+                onClick={() => goToPage(data.page - 1)}
               >
                 이전
               </Button>
               <span className="text-sm text-gray-600">
-                {data.number + 1} / {data.totalPages}
+                {data.page + 1} / {data.totalPages}
               </span>
               <Button
                 variant="outline"
                 size="sm"
-                disabled={data.last}
-                onClick={() => goToPage(data.number + 1)}
+                disabled={!data.hasNext}
+                onClick={() => goToPage(data.page + 1)}
               >
                 다음
               </Button>

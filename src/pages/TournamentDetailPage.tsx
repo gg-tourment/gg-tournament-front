@@ -1,14 +1,37 @@
-import { Link, useParams } from 'react-router-dom'
+import { useState } from 'react'
+import { Link, useNavigate, useParams } from 'react-router-dom'
 import Button from '../components/common/Button'
 import { STATUS_COLOR, STATUS_LABEL } from '../components/tournament/tournamentStatus'
+import { useJoinTournamentMutation } from '../hooks/useParticipants'
 import { useTournament } from '../hooks/useTournaments'
 import { getErrorMessage } from '../lib/errors'
 
 function TournamentDetailPage() {
   const { id } = useParams<{ id: string }>()
   const tournamentId = Number(id)
+  const navigate = useNavigate()
+  const joinMutation = useJoinTournamentMutation()
+  const [joinMessage, setJoinMessage] = useState<string | null>(null)
 
   const { data: tournament, isPending, isError, error } = useTournament(tournamentId)
+
+  function handleJoin() {
+    if (!tournament) return
+    setJoinMessage(null)
+    joinMutation.mutate(tournamentId, {
+      onSuccess: (participant) => {
+        if (tournament.entryFee > 0) {
+          navigate(`/tournaments/${tournament.id}/payment`)
+          return
+        }
+        setJoinMessage(
+          participant.status === 'CONFIRMED'
+            ? '참가 신청이 완료되었습니다.'
+            : '참가 신청이 접수되었습니다.',
+        )
+      },
+    })
+  }
 
   if (isPending) {
     return <p className="py-10 text-center text-gray-500">불러오는 중...</p>
@@ -36,9 +59,9 @@ function TournamentDetailPage() {
         <div className="flex items-center justify-between gap-4">
           <h1 className="text-2xl font-semibold text-gray-900">{tournament.title}</h1>
           {tournament.status === 'RECRUITING' && (
-            <Link to={`/tournaments/${tournament.id}/payment`}>
-              <Button>참가 신청</Button>
-            </Link>
+            <Button onClick={handleJoin} loading={joinMutation.isPending}>
+              참가 신청
+            </Button>
           )}
           {(tournament.status === 'IN_PROGRESS' || tournament.status === 'FINISHED') && (
             <Link to={`/tournaments/${tournament.id}/bracket`}>
@@ -47,6 +70,12 @@ function TournamentDetailPage() {
           )}
         </div>
         <p className="text-sm text-gray-600">주최자: {tournament.organizerName}</p>
+        {joinMessage && <p className="text-sm text-green-700">{joinMessage}</p>}
+        {joinMutation.isError && (
+          <p className="text-sm text-red-600">
+            {getErrorMessage(joinMutation.error, '참가 신청에 실패했습니다')}
+          </p>
+        )}
       </div>
 
       <dl className="grid grid-cols-2 gap-x-4 gap-y-2 rounded-lg border border-gray-200 p-4 text-sm sm:grid-cols-4">

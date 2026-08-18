@@ -1,8 +1,13 @@
-export interface TournamentOrder {
+export interface PaymentResponse {
+  id: number
+  tournamentId: number
+  userId: number
   orderId: string
-  orderName: string
+  paymentKey: string | null
   amount: number
-  customerKey: string
+  status: 'PENDING' | 'CONFIRMED' | 'CANCELLED' | 'REFUNDED'
+  paidAt: string | null
+  refundedAt: string | null
 }
 
 export interface ConfirmPaymentRequest {
@@ -11,14 +16,7 @@ export interface ConfirmPaymentRequest {
   amount: number
 }
 
-export interface PaymentResult {
-  paymentKey: string
-  orderId: string
-  orderName: string
-  totalAmount: number
-  status: string
-  approvedAt: string
-}
+export type PaymentResult = PaymentResponse
 
 export type PaymentHistoryStatus = 'DONE' | 'CANCELED'
 

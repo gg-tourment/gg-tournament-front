@@ -5,12 +5,12 @@ import type {
   PaymentHistoryItem,
   PaymentHistoryParams,
   PaymentResult,
-  TournamentOrder,
+  PaymentResponse,
 } from '../types/payment'
 
 export async function createTournamentOrder(tournamentId: number) {
-  const { data } = await apiClient.post<ApiSuccessResponse<TournamentOrder>>(
-    `/tournaments/${tournamentId}/orders`,
+  const { data } = await apiClient.post<ApiSuccessResponse<PaymentResponse>>(
+    `/tournaments/${tournamentId}/payments`,
   )
   return data.data
 }
