@@ -35,7 +35,7 @@ function PaymentSuccessPage() {
         <>
           <h1 className="text-xl font-semibold text-gray-900">참가 신청이 완료되었습니다</h1>
           <p className="text-sm text-gray-600">
-            {confirmMutation.data.totalAmount.toLocaleString()}원 결제가 정상적으로 처리되었습니다.
+            {confirmMutation.data.amount.toLocaleString()}원 결제가 정상적으로 처리되었습니다.
           </p>
         </>
       )}
