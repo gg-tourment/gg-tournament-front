@@ -15,6 +15,7 @@ dist-ssr
 # Environment variables
 .env
 .env.*.local
+gha-creds-*.json
 
 # Project docs (local only)
 CLAUDE.md
