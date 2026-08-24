@@ -36,7 +36,7 @@ Cloud Run URL이 생성되면 백엔드의 `CORS_ALLOWED_ORIGINS`에 해당 URL�
 `main` 브랜치에 변경이 반영되면 `.github/workflows/deploy-production.yml`이 다음 작업을 수행한다.
 
 1. npm 의존성 설치, 린트, 운영 빌드
-2. Cloud Build를 통한 Nginx 이미지 빌드 및 업로드
+2. GitHub 러너에서 Nginx 이미지를 빌드해 Artifact Registry에 업로드
 3. 최소 인스턴스 0, 최대 인스턴스 2 설정으로 Cloud Run 배포
 4. 공개 헬스 체크
 
