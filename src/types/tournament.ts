@@ -25,9 +25,11 @@ export interface TournamentListParams {
 }
 
 export interface TournamentDetail extends TournamentSummary {
-  description: string
-  rules: string
-  organizerName: string
+  hostId: number
+  hostNickname: string
+  prizeStructure: string | null
+  description: string | null
+  rules: string | null
   endAt: string
   createdAt: string
 }
@@ -41,6 +43,7 @@ export interface TournamentCreateRequest {
   maxParticipants: number
   entryFee: number
   prizePool: number
+  prizeStructure: string
   registrationDeadline: string
   startAt: string
   endAt: string
