@@ -7,6 +7,9 @@ interface TournamentCardProps {
 }
 
 function TournamentCard({ tournament }: TournamentCardProps) {
+  const entryFee = tournament.entryFee ?? 0
+  const prizePool = tournament.prizePool ?? 0
+
   return (
     <Link
       to={`/tournaments/${tournament.id}`}
@@ -25,9 +28,9 @@ function TournamentCard({ tournament }: TournamentCardProps) {
           {tournament.currentParticipants} / {tournament.maxParticipants}
         </dd>
         <dt>참가비</dt>
-        <dd>{tournament.entryFee.toLocaleString()}원</dd>
+        <dd>{entryFee.toLocaleString()}원</dd>
         <dt>상금</dt>
-        <dd>{tournament.prizePool.toLocaleString()}원</dd>
+        <dd>{prizePool.toLocaleString()}원</dd>
         <dt>마감</dt>
         <dd>{new Date(tournament.registrationDeadline).toLocaleDateString()}</dd>
       </dl>

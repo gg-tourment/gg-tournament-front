@@ -9,19 +9,47 @@ function TournamentPaymentPage() {
   const { id } = useParams<{ id: string }>()
   const tournamentId = Number(id)
 
-  const { data: tournament, isPending: isTournamentPending } = useTournament(tournamentId)
+  const {
+    data: tournament,
+    isPending: isTournamentPending,
+    isError: isTournamentError,
+    error: tournamentError,
+  } = useTournament(tournamentId)
   const orderMutation = useCreateTournamentOrderMutation()
   const hasRequestedOrder = useRef(false)
 
   useEffect(() => {
-    if (tournament && !hasRequestedOrder.current) {
+    if (tournament && tournament.entryFee > 0 && !hasRequestedOrder.current) {
       hasRequestedOrder.current = true
       orderMutation.mutate(tournamentId)
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [tournament])
 
-  if (isTournamentPending || orderMutation.isPending || orderMutation.isIdle) {
+  if (isTournamentPending) {
+    return <p className="py-10 text-center text-gray-500">결제 정보를 준비하는 중...</p>
+  }
+
+  if (isTournamentError) {
+    return (
+      <p className="py-10 text-center text-red-600">
+        {getErrorMessage(tournamentError, '대회 정보를 불러오지 못했습니다')}
+      </p>
+    )
+  }
+
+  if (tournament?.entryFee === 0) {
+    return (
+      <div className="flex flex-col items-center gap-4 py-10 text-center">
+        <p className="text-gray-700">무료 대회는 결제 없이 참가할 수 있습니다.</p>
+        <Link to={`/tournaments/${tournament.id}`} className="text-sm text-blue-600 hover:underline">
+          대회 상세에서 참가 신청하기
+        </Link>
+      </div>
+    )
+  }
+
+  if (orderMutation.isPending || orderMutation.isIdle) {
     return <p className="py-10 text-center text-gray-500">결제 정보를 준비하는 중...</p>
   }
 
@@ -52,9 +80,9 @@ function TournamentPaymentPage() {
 
       <TossPaymentWidget
         orderId={order.orderId}
-        orderName={order.orderName}
+        orderName={`${tournament.title} 참가비`}
         amount={order.amount}
-        customerKey={order.customerKey}
+        customerKey={`user-${order.userId}`}
         successUrl={`${window.location.origin}/payments/success`}
         failUrl={`${window.location.origin}/payments/fail`}
       />

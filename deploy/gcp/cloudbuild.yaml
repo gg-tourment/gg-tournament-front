@@ -1,0 +1,17 @@
+steps:
+  - name: gcr.io/cloud-builders/docker
+    args:
+      - build
+      - --build-arg
+      - VITE_API_BASE_URL=${_VITE_API_BASE_URL}
+      - --build-arg
+      - VITE_TOSS_CLIENT_KEY=${_VITE_TOSS_CLIENT_KEY}
+      - --tag
+      - ${_IMAGE}
+      - .
+images:
+  - ${_IMAGE}
+substitutions:
+  _IMAGE: asia-northeast3-docker.pkg.dev/gg-tournament-prod-2465/gg-tournament/frontend:latest
+  _VITE_API_BASE_URL: https://34-47-65-133.sslip.io/api
+  _VITE_TOSS_CLIENT_KEY: test_gck_docs_Ovk5rk1EwkEbP0W43n07xlzm

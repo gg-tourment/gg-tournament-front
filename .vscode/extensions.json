@@ -1,0 +1,9 @@
+{
+  "recommendations": [
+    "openai.chatgpt",
+    "dbaeumer.vscode-eslint",
+    "bradlc.vscode-tailwindcss",
+    "usernamehw.errorlens",
+    "eamodio.gitlens"
+  ]
+}
