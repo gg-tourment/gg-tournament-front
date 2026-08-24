@@ -30,3 +30,16 @@ gcloud run deploy gg-tournament-front `
 
 Cloud Run URL이 생성되면 백엔드의 `CORS_ALLOWED_ORIGINS`에 해당 URL을 추가하고
 백엔드 앱 컨테이너를 다시 생성한다.
+
+## GitHub Actions 자동 배포
+
+`main` 브랜치에 변경이 반영되면 `.github/workflows/deploy-production.yml`이 다음 작업을 수행한다.
+
+1. npm 의존성 설치, 린트, 운영 빌드
+2. Cloud Build를 통한 Nginx 이미지 빌드 및 업로드
+3. 최소 인스턴스 0, 최대 인스턴스 2 설정으로 Cloud Run 배포
+4. 공개 헬스 체크
+
+인증은 `github-actions/gg-tournament-front` Workload Identity Provider와
+`github-frontend-deploy` 서비스 계정을 사용한다. 서비스 계정 키는 저장하지 않는다.
+실패 내역은 GitHub 저장소의 Actions 탭에서 확인한다.
