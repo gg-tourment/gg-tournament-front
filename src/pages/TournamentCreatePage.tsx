@@ -51,6 +51,7 @@ function TournamentCreatePage() {
         maxParticipants: Number(maxParticipants),
         entryFee: Number(entryFee),
         prizePool: Number(prizePool),
+        prizeStructure: JSON.stringify({ '1st': 100 }),
         registrationDeadline,
         startAt,
         endAt,
