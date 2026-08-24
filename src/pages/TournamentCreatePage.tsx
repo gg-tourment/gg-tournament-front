@@ -5,6 +5,11 @@ import Input from '../components/common/Input'
 import { useCreateTournamentMutation } from '../hooks/useTournaments'
 import { getErrorMessage } from '../lib/errors'
 import type { TournamentFormat } from '../types/tournament'
+import {
+  toDateTimeLocalValue,
+  validateTournamentSchedule,
+  type TournamentScheduleError,
+} from '../utils/tournamentValidation'
 
 const FORMAT_OPTIONS: { value: TournamentFormat; label: string }[] = [
   { value: 'SINGLE_ELIMINATION', label: '싱글 엘리미네이션' },
@@ -27,9 +32,17 @@ function TournamentCreatePage() {
   const [endAt, setEndAt] = useState('')
   const [description, setDescription] = useState('')
   const [rules, setRules] = useState('')
+  const [scheduleError, setScheduleError] = useState<TournamentScheduleError | null>(null)
 
   function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault()
+    const validationError = validateTournamentSchedule(registrationDeadline, startAt, endAt)
+    if (validationError) {
+      setScheduleError(validationError)
+      return
+    }
+
+    setScheduleError(null)
     createMutation.mutate(
       {
         title,
@@ -51,6 +64,8 @@ function TournamentCreatePage() {
       },
     )
   }
+
+  const minimumDateTime = toDateTimeLocalValue(new Date())
 
   return (
     <div className="mx-auto flex max-w-xl flex-col gap-6 py-10">
@@ -79,7 +94,7 @@ function TournamentCreatePage() {
           <Input
             label="최대 참가자 수"
             type="number"
-            min={1}
+            min={2}
             value={maxParticipants}
             onChange={(e) => setMaxParticipants(e.target.value)}
             required
@@ -106,22 +121,37 @@ function TournamentCreatePage() {
           <Input
             label="참가 신청 마감"
             type="datetime-local"
+            min={minimumDateTime}
             value={registrationDeadline}
-            onChange={(e) => setRegistrationDeadline(e.target.value)}
+            onChange={(e) => {
+              setRegistrationDeadline(e.target.value)
+              setScheduleError(null)
+            }}
+            error={scheduleError?.field === 'registrationDeadline' ? scheduleError.message : undefined}
             required
           />
           <Input
             label="대회 시작"
             type="datetime-local"
+            min={registrationDeadline || minimumDateTime}
             value={startAt}
-            onChange={(e) => setStartAt(e.target.value)}
+            onChange={(e) => {
+              setStartAt(e.target.value)
+              setScheduleError(null)
+            }}
+            error={scheduleError?.field === 'startAt' ? scheduleError.message : undefined}
             required
           />
           <Input
             label="대회 종료"
             type="datetime-local"
+            min={startAt || registrationDeadline || minimumDateTime}
             value={endAt}
-            onChange={(e) => setEndAt(e.target.value)}
+            onChange={(e) => {
+              setEndAt(e.target.value)
+              setScheduleError(null)
+            }}
+            error={scheduleError?.field === 'endAt' ? scheduleError.message : undefined}
             required
           />
         </div>
