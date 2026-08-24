@@ -69,7 +69,7 @@ function TournamentDetailPage() {
             </Link>
           )}
         </div>
-        <p className="text-sm text-gray-600">주최자: {tournament.organizerName}</p>
+        <p className="text-sm text-gray-600">주최자: {tournament.hostNickname}</p>
         {joinMessage && <p className="text-sm text-green-700">{joinMessage}</p>}
         {joinMutation.isError && (
           <p className="text-sm text-red-600">
@@ -99,12 +99,16 @@ function TournamentDetailPage() {
 
       <div className="flex flex-col gap-2">
         <h2 className="text-lg font-semibold text-gray-900">대회 소개</h2>
-        <p className="whitespace-pre-line text-sm text-gray-700">{tournament.description}</p>
+        <p className="whitespace-pre-line text-sm text-gray-700">
+          {tournament.description || '등록된 대회 소개가 없습니다.'}
+        </p>
       </div>
 
       <div className="flex flex-col gap-2">
         <h2 className="text-lg font-semibold text-gray-900">대회 규칙</h2>
-        <p className="whitespace-pre-line text-sm text-gray-700">{tournament.rules}</p>
+        <p className="whitespace-pre-line text-sm text-gray-700">
+          {tournament.rules || '등록된 대회 규칙이 없습니다.'}
+        </p>
       </div>
     </div>
   )
